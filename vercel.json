@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/sse", "dest": "/api/sse.js" }
+  ]
+}
