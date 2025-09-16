@@ -1,25 +1,34 @@
 export default async function handler(req, res) {
-  if (req.method === "GET") {
-    return res.status(200).json({ ok: true, method: "GET" });
+  const targetUrl = process.env.APPS_SCRIPT_URL;
+
+  if (!targetUrl) {
+    return res.status(500).json({ 
+      error: "APPS_SCRIPT_URL no está configurada en Vercel"
+    });
   }
 
-  if (req.method === "POST") {
-    try {
-      const appsScriptUrl = process.env.APPS_SCRIPT_URL;
+  try {
+    if (req.method === "GET") {
+      return res.status(200).json({ ok: true, method: "GET" });
+    }
 
-      const response = await fetch(appsScriptUrl, {
+    if (req.method === "POST") {
+      const response = await fetch(targetUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(req.body),
       });
 
       const data = await response.json();
-
       return res.status(200).json(data);
-    } catch (err) {
-      return res.status(500).json({ error: "Error proxying to Apps Script", details: err.message });
     }
-  }
 
-  return res.status(405).json({ error: "Method Not Allowed" });
+    return res.status(405).json({ error: "Método no permitido" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ 
+      error: "Error proxying to Apps Script", 
+      details: err.message 
+    });
+  }
 }
