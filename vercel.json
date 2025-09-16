@@ -1,6 +1,8 @@
 {
   "version": 2,
-  "routes": [
-    { "src": "/sse", "dest": "/api/sse.js" }
-  ]
+  "functions": {
+    "api/sse.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }
