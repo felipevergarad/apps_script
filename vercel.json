@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "functions": {
-    "api/sse.js": {
-      "runtime": "nodejs18.x"
+  "builds": [
+    {
+      "src": "api/sse.js",
+      "use": "@vercel/node"
     }
-  }
+  ],
+  "routes": [
+    {
+      "src": "/.*",
+      "dest": "api/sse.js"
+    }
+  ]
 }
